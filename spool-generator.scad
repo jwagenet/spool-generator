@@ -16,7 +16,8 @@ thread_inner_diameter   = 25;
 
 
 //spool_cap(spool_diameter,barrel_diameter,barrel_width,flange_diameter,flange_width,thread_length,thread_pitch,thread_outer_diameter,thread_outer_diameter);
-spool_body(spool_diameter,barrel_diameter,barrel_width,flange_diameter,flange_width,thread_length,thread_pitch,thread_outer_diameter,thread_inner_diameter);
+//spool_body(spool_diameter,barrel_diameter,barrel_width,flange_diameter,flange_width,thread_length,thread_pitch,thread_outer_diameter,thread_inner_diameter);
+//barrel(spool_diameter,barrel_diameter,barrel_width,thread_length,thread_pitch,thread_outer_diameter);
 
 
 
@@ -34,27 +35,36 @@ module spool_cap(sd,bd,bw,fd,fw,tl,tp,tg,tid){
 module spool_body(sd,bd,bw,fd,fw,tl,tp,tg,tod){
     difference(){
         union(){
-            flange(fd,fw);
+            //flange(fd,fw);
             translate([0,0,fw])cylinder(bw,d=bd,$fn=100);
         }
         
         translate([0,0,-.1])cylinder(fw+tl*tp+.2,d=20,$fn=100);
         translate([0,0,fw+bw-tl-1])screw_thread(tod,tp,45,tl+1,1,1);
         
-        countersink_end(tp/2,tod,45,1,tl+1,bw,fw);
+        translate([0,0,bw+fw-tp/2+0.1])countersink_end(tp/2,tod,45,1,tl+1);
     }
 }
 
 module flange(fd,fw){
     cylinder(fw,d=fd,$fn=100);
 }
-module barrel(tl){}
+module barrel(sd,bd,bw,tl,tp,tod){
+    difference(){
+        cylinder(bw,d=bd,$fn=100);
+        translate([0,0,-.1])cylinder(bw+.2,d=sd,$fn=100);
+    translate([0,0,-.1])countersink_end(tp/2,tod,45,1,tl+1);
+    translate([0,0,bw+.1])mirror([0,0,1])countersink_end(tp/2,tod,45,1,tl+1);
+    screw_thread(tod,tp,45,tl+1,1,1);    
+    
+    
+    }
+}
 
-module countersink_end(chg,cod,clf,crs,hg,bw,fw){
-    translate([0,0,bw+fw-chg+0.1])
+module countersink_end(chg,cod,clf,crs,hg){
     cylinder(h=chg+0.01, 
-             r1=cod/2-(chg+0.1)*cos(clf)/sin(clf),
-             r2=cod/2, 
+             r2=cod/2-(chg+0.1)*cos(clf)/sin(clf),
+             r1=cod/2, 
              $fn=floor(cod*PI/crs), center=false);
 }
 
