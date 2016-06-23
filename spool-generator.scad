@@ -5,9 +5,10 @@
 
 
 /* [Component Type] */
-type					= "cap";   //[cap,body,barrel]
+type					= "cap";    //[cap,body,barrel]
+
 /* [Window Type] */
-window_type		    	= "cap";   //[film,web]
+window_type		    	= "web";    //[film,web]
 
 spool_diameter          = 20;
 drum_diameter           = 27;
@@ -22,7 +23,7 @@ thread_inner_diameter   = 25;
 
 window_border_width     = 5;
 window_fillet_radius    = 3;
-number_of_windows       = 3;
+number_of_windows       = 6;
 
 number_of_eyelets       = 2;
 sets_of_eyelets         = 3;
